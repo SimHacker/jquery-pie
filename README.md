@@ -1,4 +1,5 @@
 jquery-pie
 ==========
 
-Pie mens for jQuery
+Pie menus for jQuery, by Don Hopkins.
+

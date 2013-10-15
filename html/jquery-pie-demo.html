@@ -1,0 +1,353 @@
+<html>
+
+  <head>
+
+    <title>jQuery Pie Demo</title>
+
+    <link rel="stylesheet" type="text/css" href="../css/jquery-pie.css"/>
+
+    <script type="text/javascript" src="../jquery-ui/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../jquery-ui/ui/jquery.ui.widget.js"></script>
+    <script type="text/javascript" src="../javascript/jquery-pie.js"></script>
+    <script type="text/javascript" src="../javascript/jquery-pie-demo.js"></script>
+
+    <style>
+
+      body {
+          position: relative;
+          margin: 0;
+          border: 0;
+          font: lucida-sans, sans;
+          font-size: 16pt;
+      }
+
+      #target {
+          width: 100%;
+          height: 100%;
+      }
+
+      #header {
+          font-size: 200%;
+          font-weight: bold;
+          padding: 10px;
+      }
+
+      #message {
+          font-size: 150%;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <div id="target">
+
+      <center>
+        <div id="header">
+          jQuery Pie Demo, by
+          <a target="_new" href="http://www.DonHopkins.com">Don Hopkins</a>.
+        </div>
+        <div id="message">
+          Loading...
+        </div>
+      </center>
+
+    </div>
+
+    <!--
+      The following elements demonstrate how to define a pie menu in the DOM.
+      Give the elements the appropriate class names to identify them
+      (Pie, PieBackground, PieSlices, PieOvelay,
+      PieSlice, PieSliceBackground, PieSliceItems, PieSliceOverlay,
+      PieItem, PieItemBackground, PieItemLabel, PieItemOverlay),
+      and give the top level element an id, define a pieRef with that id
+      in options.pies, then you can use that pieRef name to refer to the
+      pie (i.e. in defaultPie or nextPie).
+      The data-<pie,slice,item>-<property> attributes configure properties
+      of the pie, slice and item.
+      The on<handler> attrivutes delegate to functons defined in the target
+      optionsdictionary.
+    -->
+
+    <div
+       id="DOMPie"
+       class="Pie"
+       style="display: none;"
+       data-pie-nextPie="DynamicPie"
+       onpieupdate="options.rotatePieBackground.call(this, event, pie, slice, item);"
+       onpieitemupdate="options.highlightItem.call(this, event, pie, slice, item);"
+       onpieitemstop="options.unhighlightItem.call(this, event, pie, slice, item);"
+       onpieitemselect="options.debugItemSelect.call(this, event, pie, slice, item);"
+     >
+
+      <div class="PieBackground PieBackground_Pan"></div>
+
+      <div class="PieSlices">
+
+        <div class="PieSlice PieSlice_North" data-pieslice-sliceDirection="North">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_South" data-pieslice-sliceDirection="South">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_East" data-pieslice-sliceDirection="East">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_West" data-pieslice-sliceDirection="West">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_NorthWest" data-pieslice-sliceDirection="NorthWest">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_NorthEast" data-pieslice-sliceDirection="NorthEast">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_SouthWest" data-pieslice-sliceDirection="SouthWest">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+        <div class="PieSlice PieSlice_SouthEast" data-pieslice-sliceDirection="SouthEast">
+
+          <div class="PieSliceBackground"></div>
+
+          <div class="PieSliceItems">
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Walk</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Run</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Jump</div>
+            </div>
+
+            <div class="PieItem">
+              <div class="PieItemBackground"></div>
+              <div class="PieItemLabel">Fly</div>
+            </div>
+
+          </div>
+
+          <div class="PieSliceOverlay"></div>
+
+        </div>
+
+      </div>
+
+      <div class="PieOverlay"></div>
+
+    </div>
+
+  </body>
+
+</html>

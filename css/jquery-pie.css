@@ -1,0 +1,278 @@
+/*
+ * jquery-pie.css
+ *
+ * Pies for jQuery.
+ *
+ * Copyright (C) 2013 By Don Hopkins.
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+
+/*
+ * PieCapture
+ */
+
+
+.PieCaptureOverlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #000000;
+    opacity: 0.5;
+    z-index: 100000;
+}
+
+
+/*
+ * Pie
+ */
+
+
+.Pie {
+    display: block;
+    position: absolute;
+    font-family: Verdana, sans;
+    font-size: 16pt;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: moz-none;
+    -ms-user-select: none;
+    user-select: none;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+/*
+ * PieBackground
+ */
+
+
+.PieBackground {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+.PieBackground_Pan {
+    width: 400px;
+    height: 400px;
+    margin-left: -200px;
+    margin-top: -200px;
+    background-image: url(../images/PieBackground_Pan.png);
+}
+
+
+/*
+ * PieOverlay
+ */
+
+
+.PieOverlay {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+/*
+ * PieSlices
+ */
+
+
+.PieSlices {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+/*
+ * PieSlice
+ */
+
+
+.PieSlice {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+.PieSliceHighlight {
+}
+
+.PieSlice_North {
+}
+
+.PieSlice_South {
+}
+
+.PieSlice_East {
+}
+
+.PieSlice_West {
+}
+
+.PieSlice_NorthWest {
+}
+
+.PieSlice_NorthEast {
+}
+
+.PieSlice_SouthWest {
+}
+
+.PieSlice_SouthEast {
+}
+
+
+/*
+ * PieSliceBackground
+ */
+
+
+.PieSliceBackground {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+.PieSliceBackground_North {
+}
+
+.PieSliceBackground_South {
+}
+
+.PieSliceBackground_East {
+}
+
+.PieSliceBackground_West {
+}
+
+.PieSliceBackground_NorthWest {
+}
+
+.PieSliceBackground_NorthEast {
+}
+
+.PieSliceBackground_SouthWest {
+}
+
+.PieSliceBackground_SouthEast {
+}
+
+
+/*
+ * PieSliceOverlay
+ */
+
+
+.PieSliceOverlay {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+/*
+ * PieSliceItems
+ */
+
+
+.PieSliceItems {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+/*
+ * PieItem
+ */
+
+
+.PieItem {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+.PieItemHighlight .PieItemBackground {
+    background-color: yellow;
+}
+
+/*
+ * PieItemBackground
+ */
+
+
+.PieItemBackground {
+    display: block;
+    position: absolute;
+    background-color: #a0a0ff;
+    border: 1px solid blue;
+    opacity: 1.0;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+/*
+ * PieItemLabel
+ */
+
+
+.PieItemLabel {
+    position: absolute;
+    display: block;
+    padding: 5px;
+    text-align: center;
+    z-index: 100001;
+    pointer-events: none;
+}
+
+
+.PieItemLink .PieItemLabel {
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
+/*
+ * PieItemOverlay
+ */
+
+
+.PieItemOverlay {
+    display: block;
+    position: absolute;
+    z-index: 100001;
+    pointer-events: none;
+}
+
