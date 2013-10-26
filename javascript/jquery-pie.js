@@ -50,6 +50,12 @@
 
 (function($) {
 
+    // _getCallerLog returns a string with the name of the log function
+    // that called it (i.e. LOG, WARNING, ERROR), followed by a string
+    // specifying the file and line number of the code that called the
+    // logging function, in a format that turns into a link in the
+    // Chrome debugger, so you can click on it to jump to the place
+    // in the code that wrote the log message.
     function _getCallerLog()
     {
         try {
@@ -67,6 +73,10 @@
         }
     }
 
+    // _log is the core of the logging function, which in chrome prints
+    // its arguments out as objects you can click on and browse, but
+    // in other browsers concatinates them and prints them out as
+    // strings.
     function _log()
     {
 
@@ -89,25 +99,27 @@
 
     }
 
+    // LOG writes a log message to the console.
     function LOG()
     {
         _log.apply(this, arguments);
     }
 
+    // WARNING writes a warning message to the console.
     function WARNING()
     {
         _log.apply(this, arguments);
     }
 
+    // ERROR writes an error message to the console.
     function ERROR()
     {
         _log.apply(this, arguments);
     }
 
-
     $.widget('donhopkins.pie', {
 
-        // Clas variabls.
+        // Class variabls.
         options: {},
         pies: {},
 
@@ -2221,7 +2233,6 @@
                 this.dragOffsetY = this.currentY - this.centerY;
 
             }
-
 
             //LOG("pie _trackDown:", ["this", this, "currentPie", this.currentPie]);
 
