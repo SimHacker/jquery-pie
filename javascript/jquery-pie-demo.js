@@ -42,7 +42,7 @@ $(function() {
             sliceItemLayout: 'nonOverlapping',
             sliceItemTracking: 'target',
             itemDistanceMin: 100,
-	    itemGap: 5,
+            itemGap: 5,
             slices: [
                 {
                     itemDistanceMin: 30,

@@ -331,21 +331,19 @@
             var widget =
                 this;
 
-            this.element
-                .on(triggerEvents,
-                    triggerSelector,
-                    triggerData,
-                    function(event) {
+            if (triggerEvents) {
+                this.element
+                    .on(triggerEvents,
+                        triggerSelector,
+                        triggerData,
+                        function(event) {
+                            //LOG("pie _create on mousedown:", ["this", this, "widget", widget, "handleObj", event.handleObj, "data", event.data]);
+                            widget.startPie(event, null, false);
+                            return false;
+                        });
+            }
 
-                        var handleObj = event.handleObj;
-                        var data = event.data;
-
-                        //LOG("pie _create on mousedown:", ["this", this, "widget", widget, "handleObj", handleObj, "data", data]);
-
-                        widget.startPie(event, false);
-
-                        return false;
-                    });
+            this.$body = $(document.body);
 
             this.$captureOverlay =
                 $('<div/>')
@@ -356,7 +354,7 @@
                         $.proxy(this._trackMove, this))
                     .on('mouseup.pieTrack',
                         $.proxy(this._trackUp, this))
-                    .appendTo($(document.body));
+                    .appendTo(this.$body);
 
         },
 
@@ -385,19 +383,6 @@
             }
 
             return deg;
-
-        },
-
-        offsetToDeg: function(dx, dy) {
-
-            if ((dx == 0) &&
-                (dy == 0)) {
-                return 0;
-            }
-
-            return this.normalDeg(
-                this.radToDeg(
-                    Math.atan2(-dy, dx)));
 
         },
 
@@ -442,9 +427,10 @@
             return deg;
         },
 
-        findDefaultPie: function(event) {
+        findDefaultPie: function(event, pie) {
 
             var defaultPie =
+                pie ||
                 this._findKeyDefault(
                     'defaultPie',
                     this.options,
@@ -535,26 +521,17 @@
                 return null;
             }
 
-            var $pieBackground =
-                $pie
-                    .find('.PieBackground');
-
+            var $pieBackground = $pie.find('.PieBackground');
             if ($pieBackground.length == 0) {
                 $pieBackground = null;
             }
 
-            var $pieSlices =
-                $pie
-                    .find('.PieSlices');
-
+            var $pieSlices = $pie.find('.PieSlices');
             if ($pieSlices.length == 0) {
                 $pieSlices = null;
             }
 
-            var $pieOverlay =
-                $pie
-                    .find('.PieOverlay');
-
+            var $pieOverlay = $pie.find('.PieOverlay');
             if ($pieOverlay.length == 0) {
                 $pieOverlay = null;
             }
@@ -604,26 +581,16 @@
                     self,
                     {});
 
-            self._setDefaultValues(
-                pie, pieDefaults);
+            self._setDefaultValues(pie, pieDefaults);
 
             $pieSlices
                 .find('.PieSlice')
                 .each(function(i) {
 
                 var $slice = $(this);
-
-                var $sliceBackground =
-                    $slice
-                        .find('.PieSliceBackground');
-
-                var $sliceItems =
-                    $slice
-                        .find('.PieSliceItems');
-
-                var $sliceOverlay =
-                    $slice
-                        .find('.PieSliceOverlay');
+                var $sliceBackground = $slice.find('.PieSliceBackground');
+                var $sliceItems = $slice.find('.PieSliceItems');
+                var $sliceOverlay = $slice.find('.PieSliceOverlay');
 
                 // If no intermediate $sliceItems,
                 // then create it and move the items into it,
@@ -672,8 +639,7 @@
                         self,
                         {});
 
-                self._setDefaultValues(
-                    slice, sliceDefaults);
+                self._setDefaultValues(slice, sliceDefaults);
                     
                 slices.push(slice);
 
@@ -711,8 +677,7 @@
                             self,
                             {});
 
-                    self._setDefaultValues(
-                        item, itemDefaults);
+                    self._setDefaultValues(item, itemDefaults);
 
                     items.push(item);
 
@@ -744,13 +709,9 @@
                     this,
                     {});
 
-            this._setDefaultValues(
-                pie, pieDefaults);
-
-            var body = $(document.body);
+            this._setDefaultValues(pie, pieDefaults);
 
             if (!pie.$pie) {
-
                 pie.$pie =
                     $('<div/>')
                         .attr({
@@ -759,8 +720,7 @@
                         .css({
                             display: 'none'
                         })
-                        .appendTo(body);
-
+                        .appendTo(this.$body);
             }
 
             var pieCSS =
@@ -771,8 +731,7 @@
                     this,
                     null);
             if (pieCSS) {
-                pie.$pie
-                    .css(pieCSS);
+                pie.$pie.css(pieCSS);
             }
 
             var pieCSSClass =
@@ -783,19 +742,16 @@
                     this,
                     null);
             if (pieCSSClass) {
-                pie.$pie
-                    .addClass(pieCSSClass);
+                pie.$pie.addClass(pieCSSClass);
             }
 
             if (!pie.$pieBackground) {
-
                 pie.$pieBackground =
                     $('<div/>')
                         .attr({
                             'class': cssClasses.PieBackground
                         })
                         .appendTo(pie.$pie);
-
             }
 
             var pieBackgroundCSS =
@@ -806,8 +762,7 @@
                     this,
                     null);
             if (pieBackgroundCSS) {
-                pie.$pieBackground
-                    .css(pieBackgroundCSS);
+                pie.$pieBackground.css(pieBackgroundCSS);
             }
 
             var pieBackgroundCSSClass =
@@ -818,19 +773,16 @@
                     this,
                     null);
             if (pieBackgroundCSSClass) {
-                pie.$pieBackground
-                    .addClass(pieBackgroundCSSClass);
+                pie.$pieBackground.addClass(pieBackgroundCSSClass);
             }
 
             if (!pie.$pieSlices) {
-
                 pie.$pieSlices =
                     $('<div/>')
                         .attr({
                             'class': cssClasses.PieSlices
                         })
                         .appendTo(pie.$pie);
-
             }
 
             var pieSlicesCSS =
@@ -858,14 +810,12 @@
             }
 
             if (!pie.$pieOverlay) {
-
                 pie.$pieOverlay =
                     $('<div/>')
                         .attr({
                             'class': cssClasses.PieOverlay
                         })
                         .appendTo(pie.$pie);
-
             }
 
             var pieOverlayCSS =
@@ -876,8 +826,7 @@
                     this,
                     null);
             if (pieOverlayCSS) {
-                pie.$pieOverlay
-                    .css(pieOverlayCSS);
+                pie.$pieOverlay.css(pieOverlayCSS);
             }
 
             var pieOverlayCSSClass =
@@ -888,8 +837,7 @@
                     this,
                     null);
             if (pieOverlayCSSClass) {
-                pie.$pieOverlay
-                    .addClass(pieOverlayCSSClass);
+                pie.$pieOverlay.addClass(pieOverlayCSSClass);
             }
 
             var slices = pie.slices || [];
@@ -909,18 +857,15 @@
                         this,
                         {});
 
-                this._setDefaultValues(
-                    slice, sliceDefaults);
+                this._setDefaultValues(slice, sliceDefaults);
 
                 if (!slice.$slice) {
-
                     slice.$slice =
                         $('<div/>')
                             .attr({
                                 'class': cssClasses.PieSlice
                             })
                             .appendTo(pie.$pieSlices);
-
                 }
 
                 var pieSliceCSS =
@@ -932,8 +877,7 @@
                         this,
                         null);
                if (pieSliceCSS) {
-                    slice.$slice
-                        .css(pieSliceCSS);
+                    slice.$slice.css(pieSliceCSS);
                 }
 
                 var pieSliceCSSClass =
@@ -945,19 +889,16 @@
                         this,
                         null);
                 if (pieSliceCSSClass) {
-                    slice.$slice
-                        .addClass(pieSliceCSSClass);
+                    slice.$slice.addClass(pieSliceCSSClass);
                 }
 
                 if (!slice.$sliceBackground) {
-
                     slice.$sliceBackground =
                         $('<div/>')
                             .attr({
                                 'class': cssClasses.PieSliceBackground
                             })
                             .appendTo(slice.$slice);
-
                 }
 
                 var pieSliceBackgroundCSS =
@@ -969,8 +910,7 @@
                         this,
                         null);
                 if (pieSliceBackgroundCSS) {
-                    slice.$sliceBackground
-                        .css(pieSliceBackgroundCSS);
+                    slice.$sliceBackground.css(pieSliceBackgroundCSS);
                 }
 
                 var pieSliceBackgroundCSSClass =
@@ -982,19 +922,16 @@
                         this,
                         null);
                 if (pieSliceBackgroundCSSClass) {
-                    slice.$sliceBackground
-                        .addClass(pieSliceBackgroundCSSClass);
+                    slice.$sliceBackground.addClass(pieSliceBackgroundCSSClass);
                 }
 
                 if (!slice.$sliceItems) {
-
                     slice.$sliceItems =
                         $('<div/>')
                             .attr({
                                 'class': cssClasses.PieSliceItems
                             })
                             .appendTo(slice.$slice);
-
                 }
 
                 var pieSliceItemsCSS =
@@ -1006,8 +943,7 @@
                         this,
                         null);
                 if (pieSliceItemsCSS) {
-                    slice.$sliceItems
-                        .css(pieSliceItemsCSS);
+                    slice.$sliceItems.css(pieSliceItemsCSS);
                 }
 
                 var pieSliceItemsCSSClass =
@@ -1019,19 +955,16 @@
                         this,
                         null);
                 if (pieSliceItemsCSSClass) {
-                    slice.$sliceItems
-                        .addClass(pieSliceItemsCSSClass);
+                    slice.$sliceItems.addClass(pieSliceItemsCSSClass);
                 }
 
                 if (!slice.$sliceOverlay) {
-
                     slice.$sliceOverlay =
                         $('<div/>')
                             .attr({
                                 'class': cssClasses.PieSliceOverlay
                             })
                             .appendTo(slice.$slice);
-
                 }
 
                 var pieSliceOverlayCSS =
@@ -1043,8 +976,7 @@
                         this,
                         null);
                 if (pieSliceOverlayCSS) {
-                    slice.$sliceOverlay
-                        .css(pieSliceOverlayCSS);
+                    slice.$sliceOverlay.css(pieSliceOverlayCSS);
                 }
 
                 var pieSliceOverlayCSSClass =
@@ -1056,8 +988,7 @@
                         this,
                         null);
                 if (pieSliceOverlayCSSClass) {
-                    slice.$sliceOverlay
-                        .addClass(pieSliceOverlayCSSClass);
+                    slice.$sliceOverlay.addClass(pieSliceOverlayCSSClass);
                 }
 
                 var items = slice.items || [];
@@ -1078,18 +1009,15 @@
                             this,
                             {});
 
-                    this._setDefaultValues(
-                        item, itemDefaults);
+                    this._setDefaultValues(item, itemDefaults);
 
                     if (!item.$item) {
-
                         item.$item =
                             $('<div/>')
                                 .attr({
                                     'class': cssClasses.PieItem
                                 })
                                .appendTo(slice.$sliceItems);
-
                     }
 
                     var pieItemCSS =
@@ -1102,8 +1030,7 @@
                             this,
                             null);
                     if (pieItemCSS) {
-                        item.$item
-                            .css(pieItemCSS);
+                        item.$item.css(pieItemCSS);
                     }
 
                     var pieItemCSSClass =
@@ -1116,8 +1043,7 @@
                             this,
                             null);
                     if (pieItemCSSClass) {
-                        item.$item
-                            .addClass(pieItemCSSClass);
+                        item.$item.addClass(pieItemCSSClass);
                     }
 
                     var nextPie =
@@ -1130,22 +1056,18 @@
                             this,
                             null);
                     if (nextPie) {
-                        item.$item
-                            .addClass(cssClasses.PieItemLink);
+                        item.$item.addClass(cssClasses.PieItemLink);
                     } else {
-                        item.$item
-                            .removeClass(cssClasses.PieItemLink);
+                        item.$item.removeClass(cssClasses.PieItemLink);
                     }
 
                     if (!item.$itemBackground) {
-
                         item.$itemBackground =
                             $('<div/>')
                                 .attr({
                                     'class': cssClasses.PieItemBackground
                                 })
                                 .appendTo(item.$item);
-
                     }
 
                     var pieItemBackgroundCSS =
@@ -1158,8 +1080,7 @@
                             this,
                             null);
                     if (pieItemBackgroundCSS) {
-                        item.$itemBackground
-                            .css(pieItemBackgroundCSS);
+                        item.$itemBackground.css(pieItemBackgroundCSS);
                     }
 
                     var pieItemBackgroundCSSClass =
@@ -1172,19 +1093,16 @@
                             this,
                             null);
                     if (pieItemBackgroundCSSClass) {
-                        item.$itemBackground
-                            .addClass(pieItemBackgroundCSSClass);
+                        item.$itemBackground.addClass(pieItemBackgroundCSSClass);
                     }
 
                     if (!item.$itemLabel) {
-
                         item.$itemLabel =
                             $('<div/>')
                                 .attr({
                                     'class': cssClasses.PieItemLabel
                                 })
                                 .appendTo(item.$item);
-
                     }
 
                     var pieItemLabelCSS =
@@ -1197,8 +1115,7 @@
                             this,
                             null);
                     if (pieItemLabelCSS) {
-                        item.$itemLabel
-                            .css(pieItemLabelCSS);
+                        item.$itemLabel.css(pieItemLabelCSS);
                     }
 
                     var pieItemLabelCSSClass =
@@ -1211,8 +1128,7 @@
                             this,
                             null);
                     if (pieItemLabelCSSClass) {
-                        item.$itemLabel
-                            .addClass(pieItemLabelCSSClass);
+                        item.$itemLabel.addClass(pieItemLabelCSSClass);
                     }
 
                     if (item.label) {
@@ -1221,14 +1137,12 @@
                     }
 
                     if (!item.$itemOverlay) {
-
                         item.$itemOverlay =
                             $('<div/>')
                                 .attr({
                                     'class': cssClasses.PieItemOverlay
                                 })
                                 .appendTo(item.$item);
-
                     }
 
                     var pieItemOverlayCSS =
@@ -1241,8 +1155,7 @@
                             this,
                             null);
                     if (pieItemOverlayCSS) {
-                        item.$itemOverlay
-                            .css(pieItemOverlayCSS);
+                        item.$itemOverlay.css(pieItemOverlayCSS);
                     }
 
                     var pieItemOverlayCSSClass =
@@ -1255,8 +1168,7 @@
                             this,
                             null);
                     if (pieItemOverlayCSSClass) {
-                        item.$itemOverlay
-                            .addClass(pieItemOverlayCSSClass);
+                        item.$itemOverlay.addClass(pieItemOverlayCSSClass);
                     }
 
                 }
@@ -1311,8 +1223,7 @@
                 pie.$pie.remove();
             }
 
-            pie.$pie = pie.$pieBackground = pie.$pieSlices = pie.$pieOverlay =
-                null;
+            pie.$pie = pie.$pieBackground = pie.$pieSlices = pie.$pieOverlay = null;
 
             if (pie.slices) {
 
@@ -1361,8 +1272,7 @@
                 item.$item.remove();
             }
 
-            item.$item = item.$itemBackground = item.$itemLabel = item.$itemOverlay =
-                null;
+            item.$item = item.$itemBackground = item.$itemLabel = item.$itemOverlay = null;
 
         },
 
@@ -1511,9 +1421,8 @@
             var sliceIndex;
 
             // Display the pie so we can measure it, but make it invisible.
-            var displaySave =
-                pie.$pie
-                    .css('display');
+            var displaySave = pie.$pie.css('display');
+
             pie.$pie
                 .css({
                     visibility: 'none',
@@ -2112,16 +2021,15 @@
 
         },
 
-        startPie: function(event, pinned) {
+        startPie: function(event, pie, pinned) {
 
-            //LOG("pie startPie:", ["this", this, "event", event, "pinned", pinned]);
+            //LOG("pie startPie:", ["this", this, "event", event, "pie", pie, "pinned", pinned]);
 
             var options = this.options;
 
             this._captureInput();
 
-            this.currentPie =
-                this.findDefaultPie(event)
+            this.currentPie = this.findDefaultPie(event, pie)
 
             // Hoist these notifier flags into this for efficiency,
             // since they are not allowed to change dynamicallty.
@@ -2147,6 +2055,7 @@
                     this,
                     true);
 
+            this.pinned = pinned;
             this.currentSlice = null;
             this.currentItem = null;
 
@@ -2172,8 +2081,6 @@
             this._trackDown(event, pinned);
 
             this._updateTimer(true);
-
-            this.pinned = pinned;
 
         },
 
@@ -3113,7 +3020,7 @@
 
         },
 
-        // These notifier support three different notification techniques,
+        // These notifiers support three different notification techniques,
         // as well as bubbling from the item, to the slice, to the pie, then
         // to the target.
         //
@@ -3125,14 +3032,14 @@
         //    The handlers are evaluated in a scope where "this" is
         //    the pie target, and event, slice, and item are defined.
         //
-        //    The DOM elements that may contain handler attributes are
-        //    refered to by the jQuery wrappers in item.$item (the
-        //    root item element), slice.$slice (the root slice
-        //    element), pie.$pie (the root pie element) and target.element
-        //    (the element with the jQuery .pie() widget attached).
+        //    The DOM elements that support handler attributes also have
+        //    jQuery wrappers, including item.$item (the root item element), 
+        //    slice.$slice (the root slice element), pie.$pie (the root pie 
+        //    element) and target.element (the element with the jQuery .pie() 
+        //    widget attached).
         //
-        //     The JavaScript dictionary handlers can be disabled by
-        //     setting options.notifyDOM = false.
+        //    The JavaScript dictionary handlers can be disabled by
+        //    setting options.notifyDOM = false.
         //
         // 2) Trigger jQuery event handlers defined by jQuery on the
         //    pie, slice, item and and target DOM objects, defined like:
@@ -3147,19 +3054,20 @@
         //    noTrigger as true to higher level calls, to suppress duplicate
         //    triggering.
         //
-        //     The JavaScript dictionary handlers can be disabled by
-        //     setting options.notifyjQuery = false.
+        //    The JavaScript dictionary handlers can be disabled by
+        //    setting options.notifyjQuery = false.
         //
-        //  3) Call JavaScript dictionary handler functions defined in the
-        //     item, slice, pie and options dictionaries, defined like:
-        //     pie.on<handler> = function(event, pie, slice, item) { ... };
+        // 3) Call JavaScript dictionary handler functions defined in the
+        //    item, slice, pie and options dictionaries, defined like:
+        //    pie.on<handler> = function(event, pie, slice, item) { ... };
         //
-        //     We bubble the events from item dictionary to slice diction to
-        //     to pie dictionary to options dictionar, but bubbling can be
-        //     supressed by passing true as the noBubble parameter.
+        //    We bubble the events from item dictionary to slice dictionary
+        //    to pie dictionary to options dictionary, but bubbling can be
+        //    supressed by passing true as the noBubble parameter.
         //
-        //     The JavaScript dictionary handlers can be disabled by
-        //     setting options.notifyDictionaries = false.
+        //    The JavaScript dictionary handlers can be disabled by
+        //    setting options.notifyDictionaries = false.
+        //
 
         _notifyPieItemShow: function(event, pie, slice, item, noBubble, noTrigger) {
             this._notifyPieItem('pieitemshow', event, pie, slice, item, noBubble, noTrigger);
@@ -3355,19 +3263,19 @@
             }
 
             if (!noBubble) {
-                // We want to delegete to the jQuery trigger handler AFTER
+                // We want to delegate to the jQuery trigger handler AFTER
                 // trying the item/slice/pie. But that element is not in
                 // the ancestors list of those, so jQuery does not know to 
                 // try to delegate to it. We passed noTrigger=true after 
-                // the leaf element so we don't jQuery to re-trigger the 
-                // elements between the leaf and the target, but now we 
+                // the leaf element so we don't tell jQuery to re-trigger  
+                // the elements between the leaf and the target, but now we 
                 // want to force triggering the target since jQuery won't
                 // do that for us, so we now pass noTrigger=false.
                 // One unpleasant side-effect might be that shared parents
                 // of both the target and the pie (i.e. the body) might
                 // get triggered more than once, but there isn't any good
                 // reason to put handler on the body, so this probably
-                // don't be a problem, and if it is, then your target
+                // won't be a problem. But if it is, then your target
                 // handler can call event.stopPropogation() to prevent
                 // it from triggering its parents' notifiers a second time.
                 this._notifyTarget(name, event, pie, slice, item, noBubble, false);
