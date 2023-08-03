@@ -138,6 +138,8 @@
         itemDistanceSpacing: 80,
         itemGap: 0,
         itemShear: 30,
+        itemOffsetX: 0,
+        itemOffsetY: 0,
         rotateItems: false,
         itemRotation: null,
         stickyPin: false,
@@ -159,6 +161,8 @@
             ['itemDistanceSpacing', 'number'],
             ['itemGap', 'number'],
             ['itemShear', 'number'],
+            ['itemOffsetX', 'number'],
+            ['itemOffsetY', 'number'],
             ['rotateItems', 'boolean'],
             ['itemRotation', 'number'],
             ['stickyPin', 'boolean'],
@@ -179,6 +183,8 @@
             ['itemDistanceSpacing', 'number'],
             ['itemGap', 'number'],
             ['itemShear', 'number'],
+            ['itemOffsetX', 'number'],
+            ['itemOffsetY', 'number'],
             ['rotateItems', 'boolean'],
             ['itemRotation', 'number'],
             ['sliceDirection', 'string'],
@@ -193,6 +199,8 @@
             ['itemDistanceSpacing', 'number'],
             ['itemGap', 'number'],
             ['itemShear', 'number'],
+            ['itemOffsetX', 'number'],
+            ['itemOffsetY', 'number'],
             ['rotateItems', 'boolean'],
             ['itemRotation', 'number'],
             ['nextPie', 'string']
@@ -216,6 +224,7 @@
         cssClasses: {
             Pie: 'Pie',
             PieBackground: 'PieBackground',
+            PieTitle: 'PieTitle',
             PieOverlay: 'PieOverlay',
             PieSlices: 'PieSlices',
             PieSlice: 'PieSlice',
@@ -343,7 +352,16 @@
                         });
             }
 
-            this.$body = $(document.body);
+            var root =
+                this._findKeyDefault(
+                    'root',
+                    options,
+                    this,
+                    document.body);
+            this.$root =
+                (root instanceof $)
+                    ? root
+                    : $(root);
 
             this.$captureOverlay =
                 $('<div/>')
@@ -354,7 +372,7 @@
                         $.proxy(this._trackMove, this))
                     .on('mouseup.pieTrack',
                         $.proxy(this._trackUp, this))
-                    .appendTo(this.$body);
+                    .appendTo(this.$root);
 
         },
 
@@ -524,6 +542,11 @@
             var $pieBackground = $pie.find('.PieBackground');
             if ($pieBackground.length == 0) {
                 $pieBackground = null;
+            }
+
+            var $pieTitle = $pie.find('.PieTitle');
+            if ($pieTitle.length == 0) {
+                $pieTitle = null;
             }
 
             var $pieSlices = $pie.find('.PieSlices');
@@ -720,7 +743,7 @@
                         .css({
                             display: 'none'
                         })
-                        .appendTo(this.$body);
+                        .appendTo(this.$root);
             }
 
             var pieCSS =
@@ -774,6 +797,48 @@
                     null);
             if (pieBackgroundCSSClass) {
                 pie.$pieBackground.addClass(pieBackgroundCSSClass);
+            }
+
+            if (!pie.$pieTitle) {
+                pie.$pieTitle =
+                    $('<div/>')
+                        .attr({
+                            'class': cssClasses.PieTitle
+                        })
+                        .appendTo(pie.$pie);
+            }
+
+            var pieTitle =
+                this._findKeyDefault(
+                    'pieTitle',
+                    pie,
+                    options,
+                    this,
+                    '');
+            if (pieTitle) {
+                pie.$pieTitle.text(pieTitle);
+            }
+
+            var pieTitleCSS =
+                this._findKeyDefault(
+                    'pieTitleCSS',
+                    pie,
+                    options,
+                    this,
+                    null);
+            if (pieTitleCSS) {
+                pie.$pieTitle.css(pieTitleCSS);
+            }
+
+            var pieTitleCSSClass =
+                this._findKeyDefault(
+                    'pieTitleCSSClass',
+                    pie,
+                    options,
+                    this,
+                    null);
+            if (pieTitleCSSClass) {
+                pie.$pieTitle.addClass(pieTitleCSSClass);
             }
 
             if (!pie.$pieSlices) {
@@ -1177,7 +1242,7 @@
 
         },
 
-        _removePieSlices: function(pie) {
+        removePieSlices: function(pie) {
 
             if (pie.slices) {
 
@@ -1197,7 +1262,7 @@
 
         },
 
-        _removeSliceItems: function(slice) {
+        removeSliceItems: function(slice) {
 
             if (slice.items) {
 
@@ -1585,7 +1650,7 @@
                         'equalDistance');
 
                 // Load any generic slice specific parameters, that might be overridden by the item.
-                // We load the slice values in param_slice, and them for each item load the item
+                // We load the slice values in param_slice, and then for each item load the item
                 // value into param_item, and use it if it's not undefined, else we use param_slice.
                 // This saves us from having to repeat the full search for each item.
 
@@ -1605,6 +1670,7 @@
                         options,
                         this,
                         null);
+/* NOT USED:
                 var itemDistanceMin_slice =
                     this._findKeyDefault(
                         'itemDistanceMin',
@@ -1637,6 +1703,23 @@
                         options,
                         this,
                         30);
+                var itemOffsetX_slice =
+                    this._findKeyDefault(
+                        'itemOffsetX',
+                        slice,
+                        pie,
+                        options,
+                        this,
+                        0);
+                var itemOffsetY_slice =
+                    this._findKeyDefault(
+                        'itemOffsetY',
+                        slice,
+                        pie,
+                        options,
+                        this,
+                        0);
+*/
 
                 // Load any slice parameters specific to the particular item layout policy.
                 var sliceLayers = null;
@@ -1661,6 +1744,10 @@
                 var dx = slice.dx;
                 var dy = slice.dy;
                 var itemDistance = 0;
+                var itemCenterX;
+                var itemCenterY;
+                var itemWidth;
+                var itemHeight;
                 var previousItem = null;
                 var previousItemCenterX = 0;
                 var previousItemCenterY = 0;
@@ -1710,10 +1797,8 @@
                         });
 
                     // Now that it's rotated, measure the item's size.
-                    var itemCenterX;
-                    var itemCenterY;
-                    var itemWidth = Math.ceil(item.$itemLabel.outerWidth());
-                    var itemHeight = Math.ceil(item.$itemLabel.outerHeight());
+                    itemWidth = Math.ceil(item.$itemLabel.outerWidth());
+                    itemHeight = Math.ceil(item.$itemLabel.outerHeight());
 
                     // Figure out how far out to place and space the items.
 
@@ -1757,6 +1842,24 @@
                             options,
                             this,
                             30);
+                    var itemOffsetX =
+                        this._findKeyDefault(
+                            'itemOffsetX',
+                            item,
+                            slice,
+                            pie,
+                            options,
+                            this,
+                            0);
+                    var itemOffsetY =
+                        this._findKeyDefault(
+                            'itemOffsetY',
+                            item,
+                            slice,
+                            pie,
+                            options,
+                            this,
+                            0);
 
                     var itemExtraGap = 0;
 
@@ -1770,14 +1873,14 @@
                             } else {
                                 itemDistance += itemDistanceSpacing;
                             }
-                            itemCenterX = dx * itemDistance;
-                            itemCenterY = dy * itemDistance;
+                            itemCenterX = (dx * itemDistance) + itemOffsetX;
+                            itemCenterY = (dy * itemDistance) + itemOffsetY;
                             break;
 
                         case 'minDistance':
                             itemDistance = itemDistanceMin;
-                            itemCenterX = dx * itemDistance;
-                            itemCenterY = dy * itemDistance;
+                            itemCenterX = (dx * itemDistance) + itemOffsetX;
+                            itemCenterY = (dy * itemDistance) + itemOffsetY;
                             break;
 
                         case 'nonOverlapping':
@@ -1837,8 +1940,8 @@
                                     itemCenterY += dy * itemShear;
                                 }
                             }
-                            itemCenterX = Math.floor(itemCenterX + 0.5);
-                            itemCenterY = Math.floor(itemCenterY + 0.5);
+                            itemCenterX = Math.floor(itemCenterX + 0.5) + itemOffsetX;
+                            itemCenterY = Math.floor(itemCenterY + 0.5) + itemOffsetY;
                             break;
 
                         case 'layered':
@@ -1925,6 +2028,21 @@
                 .css({
                     left: -pieMarginLeft,
                     top:  -pieMarginTop
+                });
+
+            var pieTitleWidth = 
+                pie.$pieTitle.outerWidth();
+            var pieTitleHeight = 
+                pie.$pieTitle.outerHeight();
+            var titleX = 
+                Math.round((pieTitleWidth * -0.5) - pieMarginLeft);
+            var titleY = 
+                Math.round((pieTitleHeight * -0.5) - pieMarginTop);
+                  
+            pie.$pieTitle
+                .css({
+                    left: titleX,
+                    top: titleY
                 });
 
             pie.$pieSlices

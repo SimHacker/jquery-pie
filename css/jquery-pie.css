@@ -31,10 +31,13 @@
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
     height: 100%;
     width: 100%;
     background-color: #000000;
-    opacity: 0.5;
+    opacity: 0.0;
     z-index: 100000;
 }
 
@@ -48,7 +51,8 @@
     display: block;
     position: absolute;
     font-family: Verdana, sans;
-    font-size: 16pt;
+    font-size: 14pt;
+    color: black;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -80,6 +84,26 @@
     margin-left: -200px;
     margin-top: -200px;
     background-image: url(../images/PieBackground_Pan.png);
+}
+
+
+/*
+ * PieTitle
+ */
+
+
+.PieTitle {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100001;
+    text-align: center;
+    pointer-events: none;
+    background-color: #e0e0e0;
+    border: 1px solid black;
+    padding: 5px;
+    white-space: nowrap;
 }
 
 
@@ -224,7 +248,7 @@
 }
 
 .PieItemHighlight .PieItemBackground {
-    background-color: blue;
+    background-color: yellow;
 }
 
 /*
@@ -235,8 +259,8 @@
 .PieItemBackground {
     display: block;
     position: absolute;
-    background-color: #a0a0ff;
-    border: 1px solid blue;
+    background-color: #e0e0e0;
+    border: 1px solid black;
     opacity: 1.0;
     z-index: 100001;
     pointer-events: none;
